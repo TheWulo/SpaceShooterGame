@@ -18,6 +18,7 @@ namespace Assets.Scripts.Managers
             PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("LiquidEngine1"));
             PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("LiquidEngine2"));
             PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("WarpEngine1"));
+            PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("PulseEngine1"));
             isInitialized = true;
         }
 

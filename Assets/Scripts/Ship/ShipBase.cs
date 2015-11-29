@@ -6,7 +6,9 @@ namespace Assets.Scripts.Ship
 {
     public class ShipBase : MonoBehaviour
     {
+        [Header("Ship Base")]
         public string ShipID;
+        public string ShipName;
 
         public int Health;
         public int Agility;
@@ -16,10 +18,13 @@ namespace Assets.Scripts.Ship
         private float currentAgility;
         private int currentEnergy;
 
+
+        [Header("Ship Slots")]
         public List<WeaponSpot> WeaponSpots;
         public List<SupportSpot> SupportSpots;
         public List<EngineSpot> EngineSPots;
 
+        [Header("Ship UI")]
         public GameObject ShipUI;
     }
 }

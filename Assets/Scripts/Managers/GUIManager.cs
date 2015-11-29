@@ -2,19 +2,28 @@
 using UnityEngine;
 using Assets.Scripts.GUI;
 using System;
+using Assets.Scripts.Interfaces;
 
 namespace Assets.Scripts.Managers
 {
-    public class GUIManager : Singleton<GUIManager>
+    public class GUIManager : Singleton<GUIManager>, IInitializable
     {
         [SerializeField]
         private List<GUIWindow> guiWindows;
 
         private GUIWindow currentWindow;
 
-        void Start()
+        private bool isInitialized;
+
+        public void Init()
         {
             ShowWindow(GUIWindowType.Garage);
+            isInitialized = true;
+        }
+
+        public bool IsInitialized()
+        {
+            return isInitialized;
         }
 
         public void ShowWindow(GUIWindowType type)

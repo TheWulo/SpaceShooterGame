@@ -27,7 +27,7 @@ namespace Assets.Scripts.GUI.Inventory
         {
             Type = attach.Type;
             AttachableImage.sprite = attach.PresentationSprite;
-            AttachableText.text = attach.AttachableID;
+            AttachableText.text = attach.AttachableName;
 
             switch (Type)
             {

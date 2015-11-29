@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Assets.Scripts.Managers;
 using Assets.Scripts.GUI.Inventory;
 
@@ -9,9 +10,11 @@ namespace Assets.Scripts.GUI
     {
         //SHIPS
         [SerializeField]
-        private List<GameObject> ShipsUIPrefabs;
+        private List<GameObject> shipsUIPrefabs;
         [SerializeField]
         private GameObject shipUISpawnPlace;
+        [SerializeField]
+        private Text shipNameText;
 
         //INVENTORY
         [SerializeField]
@@ -82,6 +85,9 @@ namespace Assets.Scripts.GUI
             currentShownUI.gameObject.transform.SetParent(gameObject.transform);
             currentShownUI.gameObject.transform.position = shipUISpawnPlace.transform.position;
             currentShownUI.gameObject.transform.localScale = new Vector3(1, 1, 1);
+            currentShownUI.gameObject.transform.SetSiblingIndex(1);
+
+            shipNameText.text = VehiclesManager.instance.PlayerShipCurrent.ShipName;
         }
 
         private void PopulateInventoryScreen()

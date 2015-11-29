@@ -8,6 +8,7 @@ namespace Assets.Scripts.Attachables
     {
         [Header("Attachable")]
         public string AttachableID;
+        public string AttachableName;
         public AttachableType Type;
         public int Level;
         public int EnergyRequirement;
