@@ -6,6 +6,7 @@ namespace Assets.Scripts.Ship
 {
     public class AttachableSpot : MonoBehaviour
     {
+        [SerializeField]
         protected Attachable attachedElement;
         public bool HasElement { get { return attachedElement != null; } }
 
