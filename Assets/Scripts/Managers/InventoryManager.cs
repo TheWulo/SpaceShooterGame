@@ -15,10 +15,9 @@ namespace Assets.Scripts.Managers
         public void Init()
         {
             PlayersAttachables = new List<Attachable>();
-            PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("LiquidEngine1"));
-            PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("LiquidEngine2"));
-            PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("WarpEngine1"));
-            PlayersAttachables.Add(AttachablesDatabase.instance.GetAttachable("PulseEngine1"));
+
+            DebugAddInventory();
+
             isInitialized = true;
         }
 
@@ -27,5 +26,15 @@ namespace Assets.Scripts.Managers
             return isInitialized;
         }
         #endregion
+
+        private void DebugAddInventory()
+        {
+            foreach(var attach in AttachablesDatabase.instance.GetAllAttachables())
+            {
+                PlayersAttachables.Add(attach);
+            }
+        }
+
+
     }
 }

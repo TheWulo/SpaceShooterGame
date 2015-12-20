@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using Assets.Scripts.Managers;
 
 namespace Assets.Scripts.GUI
 {
     public class SlotUI : MonoBehaviour
     {
-        public void Test()
+        public void OnClicked()
         {
-            Debug.Log("Dupa");
+            EventManager.SlotSelected.Invoke(new SlotSelectedEventArgs(this));
         }
     }
 }

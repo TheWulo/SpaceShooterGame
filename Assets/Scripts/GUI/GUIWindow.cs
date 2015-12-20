@@ -1,20 +1,31 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using Assets.Scripts.Interfaces;
 
 namespace Assets.Scripts.GUI
 {
     public enum GUIWindowType {MainMenu, Save, Play, Garage, Pause, Options, Credits}
 
-    public class GUIWindow : MonoBehaviour
+    public class GUIWindow : MonoBehaviour, IInitializable
     {
         public GUIWindowType Type;
         private Canvas targetCanvas;
         public bool IsActive { get { return targetCanvas.enabled; }}
 
-        void Start()
+        private bool isInitialized;
+
+        #region IInitializable
+        public void Init()
         {
             targetCanvas = GetComponent<Canvas>();
+            isInitialized = true;
         }
+
+        public bool IsInitialized()
+        {
+            return isInitialized;
+        }
+        #endregion
 
         public virtual void Show()
         {

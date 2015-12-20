@@ -34,5 +34,10 @@ namespace Assets.Scripts.Attachables
         {
             return Attachables.First(attach => attach.AttachableID == id);
         }
+
+        public Attachable[] GetAllAttachables()
+        {
+            return Attachables.ToArray();
+        }
     }
 }

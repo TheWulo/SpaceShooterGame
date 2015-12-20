@@ -17,6 +17,11 @@ namespace Assets.Scripts.Managers
 
         public void Init()
         {
+            foreach(var window in guiWindows)
+            {
+                window.GetComponent<IInitializable>().Init();
+            }
+
             ShowWindow(GUIWindowType.Garage);
             isInitialized = true;
         }
