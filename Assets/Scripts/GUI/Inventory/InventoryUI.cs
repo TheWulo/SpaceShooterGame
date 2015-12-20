@@ -3,7 +3,7 @@ using Assets.Scripts.Attachables;
 using Assets.Scripts.Managers;
 using UnityEngine.UI;
 
-namespace Assets.Scripts.GUI.Inventory
+namespace Assets.Scripts.GUI
 {
     public class InventoryUI : MonoBehaviour
     {
@@ -20,16 +20,20 @@ namespace Assets.Scripts.GUI.Inventory
         private Image AttachableImage;
         [SerializeField]
         private Text AttachableText;
+        [SerializeField]
+        private Text InstalledText;
 
-        private AttachableType Type;
+        public Attachable Item;
+
+        public bool Installed;
 
         public void SetUp(Attachable attach)
         {
-            Type = attach.Type;
+            Item = attach;
             AttachableImage.sprite = attach.PresentationSprite;
             AttachableText.text = attach.AttachableName;
 
-            switch (Type)
+            switch (attach.Type)
             {
                 case AttachableType.Weapon:
                     BackgroundSprite.sprite = WeaponTypeSprite;
@@ -43,6 +47,16 @@ namespace Assets.Scripts.GUI.Inventory
             }
         }
 
+        public void OnClick()
+        {
+            EventManager.InventoryItemSelected.Invoke(new InventoryItemSelectedEventArgs(this, Item));
+        }
 
+        public void SetInstalled(bool isInstalled)
+        {
+            Installed = isInstalled;
+            InstalledText.enabled = Installed;
+            GetComponent<Button>().interactable = !Installed;
+        }
     }
 }

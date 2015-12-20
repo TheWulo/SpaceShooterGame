@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using Assets.Scripts.GUI;
 
 namespace Assets.Scripts.Ship
 {
@@ -25,6 +26,6 @@ namespace Assets.Scripts.Ship
         public List<EngineSpot> EngineSPots;
 
         [Header("Ship UI")]
-        public GameObject ShipUI;
+        public ShipUI ShipUIObject;
     }
 }

@@ -2,39 +2,91 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Assets.Scripts.Managers;
-using Assets.Scripts.GUI.Inventory;
+using Assets.Scripts.GUI;
+using Assets.Scripts.Attachables;
+using System.Linq;
 
 namespace Assets.Scripts.GUI
 {
     public class HangarScreenController : GUIWindow
     {
-        //SHIPS
-        [SerializeField]
-        private List<GameObject> shipsUIPrefabs;
+        [Header("ShipsUI")]
         [SerializeField]
         private GameObject shipUISpawnPlace;
         [SerializeField]
         private Text shipNameText;
 
-        //INVENTORY
+        [Header("InventoryUI")]
         [SerializeField]
         private GameObject inventoryContainer;
         [SerializeField]
         private GameObject inventoryUIPrefab;
 
-        private GameObject currentShownUI;
+        [Header("StatisticsUI")]
+        [SerializeField]
+        private Text healthLabel;
+        [SerializeField]
+        private Text energyLabel;
+        [SerializeField]
+        private Text damageLabel;
+        [SerializeField]
+        private Text speedLabel;
+
+        private ShipUI currentShownUI;
+
+        private SlotUI currentSelectedSlot;
+
+        private void OnSelectedSlot(SlotSelectedEventArgs args)
+        {
+            if (args.SelectedSlot.attachedItem == null)
+            {
+                EnableOnlyCorrectInventroy(args.SelectedSlot.Type);
+                currentSelectedSlot = args.SelectedSlot;
+            }
+            else
+            {
+                args.SelectedSlot.DetachItem();
+            }
+        }
+
+        void OnInventoryItemSelected(InventoryItemSelectedEventArgs args)
+        {
+            if (currentSelectedSlot == null) return;
+
+            currentSelectedSlot.AttachItem(args.Item);
+            args.InventoryUI.SetInstalled(true);
+            currentSelectedSlot = null;
+            EnableAllInventory();
+        }
+
+        void OnItemDetached(ItemDetachedEventArgs args)
+        {
+            MoveItemBackToInventory(args.Item);
+        }
 
         public override void Show()
         {
+            EventManager.SlotSelected.Listeners += OnSelectedSlot;
+            EventManager.InventoryItemSelected.Listeners += OnInventoryItemSelected;
+            EventManager.ItemDetached.Listeners += OnItemDetached;
+
             base.Show();
 
             ShowCurrentShip();
             PopulateInventoryScreen();
         }
 
+        public override void Hide()
+        {
+            EventManager.SlotSelected.Listeners -= OnSelectedSlot;
+            EventManager.InventoryItemSelected.Listeners -= OnInventoryItemSelected;
+
+            base.Hide();
+        }
+
         void Update()
         {
-            DebugChangeShips();
+            //DebugChangeShips();
         }
 
         private void DebugChangeShips()
@@ -80,7 +132,7 @@ namespace Assets.Scripts.GUI
         {
             if (currentShownUI != null) Destroy(currentShownUI.gameObject);
 
-            currentShownUI = (Instantiate(VehiclesManager.instance.PlayerShipCurrent.ShipUI) as GameObject);
+            currentShownUI = (Instantiate(VehiclesManager.instance.PlayerShipCurrent.ShipUIObject.gameObject) as GameObject).GetComponent<ShipUI>();
 
             currentShownUI.gameObject.transform.SetParent(gameObject.transform);
             currentShownUI.gameObject.transform.position = shipUISpawnPlace.transform.position;
@@ -99,6 +151,31 @@ namespace Assets.Scripts.GUI
                 uiElement.gameObject.transform.localScale = new Vector3(1, 1, 1);
                 uiElement.SetUp(invent);
             }
+        }
+
+        private void EnableOnlyCorrectInventroy(AttachableType type)
+        {
+            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            {
+                if (inventoryItem.Installed) continue;
+
+                inventoryItem.GetComponent<Button>().interactable = inventoryItem.Item.Type == type;
+            }
+        }
+
+        private void EnableAllInventory()
+        {
+            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            {
+                if (inventoryItem.Installed) continue;
+
+                inventoryItem.GetComponent<Button>().interactable = true;
+            }
+        }
+
+        private void MoveItemBackToInventory(Attachable item)
+        {
+            inventoryContainer.GetComponentsInChildren<InventoryUI>().First(inventoryUI => inventoryUI.Item == item).SetInstalled(false);
         }
     }
 }
