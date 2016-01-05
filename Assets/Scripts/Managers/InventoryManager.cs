@@ -32,9 +32,8 @@ namespace Assets.Scripts.Managers
             foreach(var attach in AttachablesDatabase.instance.GetAllAttachables())
             {
                 PlayersAttachables.Add(attach);
+                PlayersAttachables.Add(attach);
             }
         }
-
-
     }
 }

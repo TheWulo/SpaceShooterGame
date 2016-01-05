@@ -17,9 +17,9 @@ namespace Assets.Scripts.Managers
         {
             PlayerShips = new List<ShipBase>();
 
-             DebugUnlockAllShips();
+            DebugUnlockAllShips();
 
-            PlayerShipCurrent = PlayerShips[0];
+            PlayerShipCurrent = PlayerShips[1];
 
             isInitialized = true;
         }

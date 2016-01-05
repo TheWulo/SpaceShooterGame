@@ -8,6 +8,7 @@ namespace Assets.Scripts.Ship
 {
     class ShipsDatabase : Singleton<ShipsDatabase>, IInitializable
     {
+        [SerializeField]
         private List<ShipBase> Ships;
 
         private bool isInitialized;
@@ -15,12 +16,6 @@ namespace Assets.Scripts.Ship
         #region IInitializable
         public void Init()
         {
-            Ships = new List<ShipBase>();
-            foreach (var attach in GetComponentsInChildren<ShipBase>())
-            {
-                Ships.Add(attach);
-            }
-
             isInitialized = true;
         }
 

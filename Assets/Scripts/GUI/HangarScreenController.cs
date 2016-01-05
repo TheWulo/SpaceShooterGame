@@ -74,6 +74,8 @@ namespace Assets.Scripts.GUI
 
             ShowCurrentShip();
             PopulateInventoryScreen();
+
+            VehicleAssemblyManager.instance.Prepare();
         }
 
         public override void Hide()
@@ -86,46 +88,56 @@ namespace Assets.Scripts.GUI
 
         void Update()
         {
-            //DebugChangeShips();
+            DebugChangeShips();
         }
 
         private void DebugChangeShips()
         {
+            bool changed = false;
+
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[0];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[1];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[2];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[3];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[4];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha6))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[5];
-                ShowCurrentShip();
+                changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha7))
             {
                 VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[6];
-                ShowCurrentShip();
+                changed = true;
             }
+
+            if (changed)
+            {
+                RefreshInventory();
+                ShowCurrentShip();
+                VehicleAssemblyManager.instance.Prepare();
+            }
+
         }
 
         private void ShowCurrentShip()
@@ -141,6 +153,8 @@ namespace Assets.Scripts.GUI
 
             shipNameText.text = VehiclesManager.instance.PlayerShipCurrent.ShipName;
         }
+
+        #region Inventory
 
         private void PopulateInventoryScreen()
         {
@@ -173,9 +187,21 @@ namespace Assets.Scripts.GUI
             }
         }
 
+        private void RefreshInventory()
+        {
+            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            {
+                if (!inventoryItem.Installed) continue;
+
+                inventoryItem.SetInstalled(false);
+            }
+        }
+
         private void MoveItemBackToInventory(Attachable item)
         {
-            inventoryContainer.GetComponentsInChildren<InventoryUI>().First(inventoryUI => inventoryUI.Item == item).SetInstalled(false);
+            inventoryContainer.GetComponentsInChildren<InventoryUI>().First(inventoryUI => inventoryUI.Item == item && inventoryUI.Installed == true).SetInstalled(false);
         }
+
+        #endregion
     }
 }

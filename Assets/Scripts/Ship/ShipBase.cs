@@ -23,7 +23,7 @@ namespace Assets.Scripts.Ship
         [Header("Ship Slots")]
         public List<WeaponSpot> WeaponSpots;
         public List<SupportSpot> SupportSpots;
-        public List<EngineSpot> EngineSPots;
+        public List<EngineSpot> EngineSpots;
 
         [Header("Ship UI")]
         public ShipUI ShipUIObject;

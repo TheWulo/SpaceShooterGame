@@ -7,6 +7,7 @@ namespace Assets.Scripts.GUI
 {
     public class SlotUI : MonoBehaviour
     {
+        public int SlotID;
         [SerializeField]
         private Image SpotImage;
         [SerializeField]

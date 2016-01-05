@@ -8,6 +8,7 @@ namespace Assets.Scripts.Attachables
 {
     public class AttachablesDatabase : Singleton<AttachablesDatabase>, IInitializable
     {
+        [SerializeField]
         private List<Attachable> Attachables;
 
         private bool isInitialized;
@@ -15,12 +16,6 @@ namespace Assets.Scripts.Attachables
         #region IInitializable
         public void Init()
         {
-            Attachables = new List<Attachable>();
-            foreach (var attach in GetComponentsInChildren<Attachable>())
-            {
-                Attachables.Add(attach);
-            }
-
             isInitialized = true;
         }
 

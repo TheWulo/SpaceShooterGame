@@ -6,6 +6,7 @@ namespace Assets.Scripts.Ship
 {
     public class AttachableSpot : MonoBehaviour
     {
+        public int AttachableID;
         [SerializeField]
         protected Attachable attachedElement;
         public bool HasElement { get { return attachedElement != null; } }
@@ -19,7 +20,7 @@ namespace Assets.Scripts.Ship
         {
             if (HasElement)
             {
-                Destroy(attachedElement);
+                Destroy(attachedElement.gameObject);
                 attachedElement = null;
             }
         }
