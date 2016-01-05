@@ -36,6 +36,13 @@ namespace Assets.Scripts.GUI
 
         private SlotUI currentSelectedSlot;
 
+        private List<InventoryUI> InventoryList;
+
+        void Awake()
+        {
+            InventoryList = new List<InventoryUI>();
+        }
+
         private void OnSelectedSlot(SlotSelectedEventArgs args)
         {
             if (args.SelectedSlot.attachedItem == null)
@@ -82,6 +89,7 @@ namespace Assets.Scripts.GUI
         {
             EventManager.SlotSelected.Listeners -= OnSelectedSlot;
             EventManager.InventoryItemSelected.Listeners -= OnInventoryItemSelected;
+            EventManager.ItemDetached.Listeners -= OnItemDetached;
 
             base.Hide();
         }
@@ -158,38 +166,44 @@ namespace Assets.Scripts.GUI
 
         private void PopulateInventoryScreen()
         {
+            if (InventoryList.Count != 0)
+            {
+                var inventoryItems = InventoryList.ToArray();
+                for (int i = 0; i < inventoryItems.Length; ++i)
+                {
+                    Destroy(inventoryItems[i].gameObject);
+                }
+                InventoryList.Clear();
+            }
             foreach (var invent in InventoryManager.instance.PlayersAttachables)
             {
                 InventoryUI uiElement = (Instantiate(inventoryUIPrefab) as GameObject).GetComponent<InventoryUI>();
                 uiElement.gameObject.transform.SetParent(inventoryContainer.transform);
                 uiElement.gameObject.transform.localScale = new Vector3(1, 1, 1);
                 uiElement.SetUp(invent);
+                InventoryList.Add(uiElement);
             }
         }
 
         private void EnableOnlyCorrectInventroy(AttachableType type)
         {
-            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            foreach (var inventoryItem in InventoryList)
             {
-                if (inventoryItem.Installed) continue;
-
-                inventoryItem.GetComponent<Button>().interactable = inventoryItem.Item.Type == type;
+                inventoryItem.gameObject.SetActive(inventoryItem.Item.Type == type);
             }
         }
 
         private void EnableAllInventory()
         {
-            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            foreach (var inventoryItem in InventoryList)
             {
-                if (inventoryItem.Installed) continue;
-
-                inventoryItem.GetComponent<Button>().interactable = true;
+                inventoryItem.gameObject.SetActive(true);
             }
         }
 
         private void RefreshInventory()
         {
-            foreach (var inventoryItem in inventoryContainer.GetComponentsInChildren<InventoryUI>())
+            foreach (var inventoryItem in InventoryList)
             {
                 if (!inventoryItem.Installed) continue;
 
@@ -199,7 +213,7 @@ namespace Assets.Scripts.GUI
 
         private void MoveItemBackToInventory(Attachable item)
         {
-            inventoryContainer.GetComponentsInChildren<InventoryUI>().First(inventoryUI => inventoryUI.Item == item && inventoryUI.Installed == true).SetInstalled(false);
+            InventoryList.First(inventoryUI => inventoryUI.Item == item && inventoryUI.Installed == true).SetInstalled(false);
         }
 
         #endregion

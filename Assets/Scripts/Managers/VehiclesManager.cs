@@ -19,7 +19,7 @@ namespace Assets.Scripts.Managers
 
             DebugUnlockAllShips();
 
-            PlayerShipCurrent = PlayerShips[1];
+            PlayerShipCurrent = PlayerShips[0];
 
             isInitialized = true;
         }
