@@ -7,18 +7,18 @@ namespace Assets.Scripts.Managers
 {
     public class InventoryManager : Singleton<InventoryManager>, IInitializable
     {
-        public List<Attachable> PlayersAttachables;
+        public List<string> PlayersAttachables;
 
         private bool isInitialized;
 
         #region IInitializable
         public void Init()
         {
-            PlayersAttachables = new List<Attachable>();
-
-            DebugAddInventory();
+            PlayersAttachables = new List<string>();
 
             isInitialized = true;
+
+            PlayersAttachables.AddRange(ResearchManager.instance.GetAllUnlockedAttachables());
         }
 
         public bool IsInitialized()
@@ -26,14 +26,5 @@ namespace Assets.Scripts.Managers
             return isInitialized;
         }
         #endregion
-
-        private void DebugAddInventory()
-        {
-            foreach(var attach in AttachablesDatabase.instance.GetAllAttachables())
-            {
-                PlayersAttachables.Add(attach);
-                PlayersAttachables.Add(attach);
-            }
-        }
     }
 }

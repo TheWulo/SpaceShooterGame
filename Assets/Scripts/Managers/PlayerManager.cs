@@ -9,6 +9,7 @@ namespace Assets.Scripts.Managers
     {
         private bool isInitialized;
 
+        public int CollectedScrap = 0;
 
         public void Init()
         {

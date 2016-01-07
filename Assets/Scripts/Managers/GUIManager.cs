@@ -22,7 +22,7 @@ namespace Assets.Scripts.Managers
                 window.GetComponent<IInitializable>().Init();
             }
 
-            ShowWindow(GUIWindowType.Garage);
+            ShowWindow(GUIWindowType.MainMenu);
             isInitialized = true;
         }
 

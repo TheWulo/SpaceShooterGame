@@ -23,7 +23,6 @@ namespace Assets.Scripts.Ship
         {
             MovementSpeed = 0;
             controlledShip.EngineSpots.ForEach(spot => MovementSpeed += spot.GetEngine().Speed);
-            Debug.Log("Engines Ready!");
         }
 
         void HandleMovement()

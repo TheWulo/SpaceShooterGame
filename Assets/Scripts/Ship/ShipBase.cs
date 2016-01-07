@@ -35,6 +35,8 @@ namespace Assets.Scripts.Ship
         {
             WeaponComponent.Prepare();
             MotorComponent.Prepare();
+
+            gameObject.transform.position = Vector3.zero;
         }
     }
 }

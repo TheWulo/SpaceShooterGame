@@ -1,4 +1,6 @@
-﻿namespace Assets.Scripts.Managers
+﻿using System;
+
+namespace Assets.Scripts.Managers
 {
     public partial class EventManager
     {

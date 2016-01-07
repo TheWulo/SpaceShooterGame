@@ -22,6 +22,7 @@ namespace Assets.Scripts.GUI
         private GameObject inventoryContainer;
         [SerializeField]
         private GameObject inventoryUIPrefab;
+        private bool inventoryShowing;
 
         [Header("StatisticsUI")]
         [SerializeField]
@@ -55,6 +56,11 @@ namespace Assets.Scripts.GUI
             {
                 args.SelectedSlot.DetachItem();
             }
+            if (!inventoryShowing)
+            {
+                GetComponent<Animator>().Play("InventorySlideIn");
+                inventoryShowing = true;
+            }
         }
 
         void OnInventoryItemSelected(InventoryItemSelectedEventArgs args)
@@ -75,7 +81,7 @@ namespace Assets.Scripts.GUI
         public void OnAssemblyFinished()
         {
             EventManager.GameStarting.Invoke(new EmptyEventArgs());
-            Hide();
+            GUIManager.instance.ShowWindow(GUIWindowType.Play);
         }
 
         public override void Show()
@@ -103,6 +109,8 @@ namespace Assets.Scripts.GUI
 
         void Update()
         {
+            if (!IsActive) return;
+
             DebugChangeShips();
         }
 
@@ -187,7 +195,7 @@ namespace Assets.Scripts.GUI
                 InventoryUI uiElement = (Instantiate(inventoryUIPrefab) as GameObject).GetComponent<InventoryUI>();
                 uiElement.gameObject.transform.SetParent(inventoryContainer.transform);
                 uiElement.gameObject.transform.localScale = new Vector3(1, 1, 1);
-                uiElement.SetUp(invent);
+                uiElement.SetUp(AttachablesDatabase.instance.GetAttachable(invent));
                 InventoryList.Add(uiElement);
             }
         }
@@ -221,6 +229,13 @@ namespace Assets.Scripts.GUI
         private void MoveItemBackToInventory(Attachable item)
         {
             InventoryList.First(inventoryUI => inventoryUI.Item == item && inventoryUI.Installed == true).SetInstalled(false);
+        }
+
+        public void ToggleInventoryShowing()
+        {
+            inventoryShowing = !inventoryShowing;
+
+            GetComponent<Animator>().Play((inventoryShowing ? "InventorySlideIn" : "InventorySlideOut"));
         }
 
         #endregion

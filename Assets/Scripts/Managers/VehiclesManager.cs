@@ -7,7 +7,7 @@ namespace Assets.Scripts.Managers
 {
     public class VehiclesManager : Singleton<VehiclesManager>, IInitializable
     {
-        public List<ShipBase> PlayerShips;
+        public List<string> PlayerShips;
         public string PlayerCurrentShipID;
         public ShipBase PlayerShipCurrent;
 
@@ -16,12 +16,12 @@ namespace Assets.Scripts.Managers
         #region IInitializable
         public void Init()
         {
-            PlayerShips = new List<ShipBase>();
+            PlayerShips = new List<string>();
 
             DebugUnlockAllShips();
 
             PlayerCurrentShipID = "StarDart";
-            PlayerShipCurrent = PlayerShips[0];
+            PlayerShipCurrent = ShipsDatabase.instance.GetShip(PlayerShips[0]);
 
             isInitialized = true;
         }
@@ -36,7 +36,7 @@ namespace Assets.Scripts.Managers
         {
             foreach (var ship in ShipsDatabase.instance.GetAllShips())
             {
-                PlayerShips.Add(ship);
+                PlayerShips.Add(ship.ShipID);
             }
         }
     }

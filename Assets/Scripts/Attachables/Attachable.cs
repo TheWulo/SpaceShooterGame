@@ -10,6 +10,7 @@ namespace Assets.Scripts.Attachables
         public string AttachableID;
         public string AttachableName;
         public AttachableType Type;
+        public int ScrapCost;
         public int Level;
         public int EnergyRequirement;
         public Sprite PresentationSprite;
