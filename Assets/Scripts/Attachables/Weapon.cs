@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Projectiles;
+using Assets.Scripts.Managers;
 
 namespace Assets.Scripts.Attachables
 {
@@ -21,6 +22,7 @@ namespace Assets.Scripts.Attachables
         {
             var projectile = (GameObject)Instantiate(BulletPrefab, BulletsSpawnPoint.transform.position, BulletsSpawnPoint.transform.rotation);
             projectile.GetComponent<Projectile>().SetUp(Damage, BulletSpeed);
+            projectile.transform.SetParent((SceneContainer.instance.gameObject.transform));
             ShootTimer = 0;
         }
 
@@ -34,6 +36,11 @@ namespace Assets.Scripts.Attachables
                     Shoot();
                 }
             }
+        }
+
+        public void ToggleFire()
+        {
+            ToggleFireOn = !ToggleFireOn;
         }
     }
 }

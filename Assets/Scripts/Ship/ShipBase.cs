@@ -19,6 +19,9 @@ namespace Assets.Scripts.Ship
         private float currentAgility;
         private int currentEnergy;
 
+        [Header("Ship Components")]
+        public WeaponsComponent WeaponComponent;
+        public MotorComponent MotorComponent;
 
         [Header("Ship Slots")]
         public List<WeaponSpot> WeaponSpots;
@@ -27,5 +30,11 @@ namespace Assets.Scripts.Ship
 
         [Header("Ship UI")]
         public ShipUI ShipUIObject;
+
+        public void PrepareShipForLaunch()
+        {
+            WeaponComponent.Prepare();
+            MotorComponent.Prepare();
+        }
     }
 }

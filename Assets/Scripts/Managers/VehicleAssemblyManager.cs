@@ -96,7 +96,8 @@ namespace Assets.Scripts.Managers
             {
                 Destroy(ShipBeingBuild.gameObject);
             }
-            ShipBeingBuild = Instantiate(VehiclesManager.instance.PlayerShipCurrent);
+            ShipBeingBuild = Instantiate(ShipsDatabase.instance.GetShip(VehiclesManager.instance.PlayerCurrentShipID));
+            VehiclesManager.instance.PlayerShipCurrent = ShipBeingBuild;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Assets.Scripts.Ship
         public void Attach(Attachable element)
         {
             attachedElement = element;
+            element.transform.position = gameObject.transform.position;
         }
 
         public void Detach()

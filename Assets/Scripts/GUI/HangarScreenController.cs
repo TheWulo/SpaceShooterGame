@@ -5,6 +5,7 @@ using Assets.Scripts.Managers;
 using Assets.Scripts.GUI;
 using Assets.Scripts.Attachables;
 using System.Linq;
+using Assets.Scripts.Ship;
 
 namespace Assets.Scripts.GUI
 {
@@ -71,6 +72,12 @@ namespace Assets.Scripts.GUI
             MoveItemBackToInventory(args.Item);
         }
 
+        public void OnAssemblyFinished()
+        {
+            EventManager.GameStarting.Invoke(new EmptyEventArgs());
+            Hide();
+        }
+
         public override void Show()
         {
             EventManager.SlotSelected.Listeners += OnSelectedSlot;
@@ -105,37 +112,37 @@ namespace Assets.Scripts.GUI
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[0];
+                VehiclesManager.instance.PlayerCurrentShipID = "StarDart";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[1];
+                VehiclesManager.instance.PlayerCurrentShipID = "StarBug";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[2];
+                VehiclesManager.instance.PlayerCurrentShipID = "WuL0Wing";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[3];
+                VehiclesManager.instance.PlayerCurrentShipID = "XAT801";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[4];
+                VehiclesManager.instance.PlayerCurrentShipID = "828GEagle";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha6))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[5];
+                VehiclesManager.instance.PlayerCurrentShipID = "Harbinger";
                 changed = true;
             }
             if (Input.GetKeyDown(KeyCode.Alpha7))
             {
-                VehiclesManager.instance.PlayerShipCurrent = VehiclesManager.instance.PlayerShips[6];
+                VehiclesManager.instance.PlayerCurrentShipID = "TheCorkscrew";
                 changed = true;
             }
 
@@ -151,15 +158,15 @@ namespace Assets.Scripts.GUI
         private void ShowCurrentShip()
         {
             if (currentShownUI != null) Destroy(currentShownUI.gameObject);
-
-            currentShownUI = (Instantiate(VehiclesManager.instance.PlayerShipCurrent.ShipUIObject.gameObject) as GameObject).GetComponent<ShipUI>();
+            
+            currentShownUI = (Instantiate(ShipsDatabase.instance.GetShip(VehiclesManager.instance.PlayerCurrentShipID).ShipUIObject.gameObject) as GameObject).GetComponent<ShipUI>();
 
             currentShownUI.gameObject.transform.SetParent(gameObject.transform);
             currentShownUI.gameObject.transform.position = shipUISpawnPlace.transform.position;
             currentShownUI.gameObject.transform.localScale = new Vector3(1, 1, 1);
             currentShownUI.gameObject.transform.SetSiblingIndex(1);
 
-            shipNameText.text = VehiclesManager.instance.PlayerShipCurrent.ShipName;
+            shipNameText.text = ShipsDatabase.instance.GetShip(VehiclesManager.instance.PlayerCurrentShipID).ShipName;
         }
 
         #region Inventory

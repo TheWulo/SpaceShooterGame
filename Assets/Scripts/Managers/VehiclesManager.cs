@@ -8,6 +8,7 @@ namespace Assets.Scripts.Managers
     public class VehiclesManager : Singleton<VehiclesManager>, IInitializable
     {
         public List<ShipBase> PlayerShips;
+        public string PlayerCurrentShipID;
         public ShipBase PlayerShipCurrent;
 
         private bool isInitialized;
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Managers
 
             DebugUnlockAllShips();
 
+            PlayerCurrentShipID = "StarDart";
             PlayerShipCurrent = PlayerShips[0];
 
             isInitialized = true;
