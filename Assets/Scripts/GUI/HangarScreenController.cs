@@ -68,14 +68,8 @@ namespace Assets.Scripts.GUI
             if (currentSelectedSlot == null) return;
 
             currentSelectedSlot.AttachItem(args.Item);
-            args.InventoryUI.SetInstalled(true);
             currentSelectedSlot = null;
             EnableAllInventory();
-        }
-
-        void OnItemDetached(ItemDetachedEventArgs args)
-        {
-            MoveItemBackToInventory(args.Item);
         }
 
         public void OnAssemblyFinished()
@@ -88,7 +82,6 @@ namespace Assets.Scripts.GUI
         {
             EventManager.SlotSelected.Listeners += OnSelectedSlot;
             EventManager.InventoryItemSelected.Listeners += OnInventoryItemSelected;
-            EventManager.ItemDetached.Listeners += OnItemDetached;
 
             base.Show();
 
@@ -102,7 +95,6 @@ namespace Assets.Scripts.GUI
         {
             EventManager.SlotSelected.Listeners -= OnSelectedSlot;
             EventManager.InventoryItemSelected.Listeners -= OnInventoryItemSelected;
-            EventManager.ItemDetached.Listeners -= OnItemDetached;
 
             base.Hide();
         }
@@ -156,7 +148,6 @@ namespace Assets.Scripts.GUI
 
             if (changed)
             {
-                RefreshInventory();
                 ShowCurrentShip();
                 VehicleAssemblyManager.instance.Prepare();
             }
@@ -214,21 +205,6 @@ namespace Assets.Scripts.GUI
             {
                 inventoryItem.gameObject.SetActive(true);
             }
-        }
-
-        private void RefreshInventory()
-        {
-            foreach (var inventoryItem in InventoryList)
-            {
-                if (!inventoryItem.Installed) continue;
-
-                inventoryItem.SetInstalled(false);
-            }
-        }
-
-        private void MoveItemBackToInventory(Attachable item)
-        {
-            InventoryList.First(inventoryUI => inventoryUI.Item == item && inventoryUI.Installed == true).SetInstalled(false);
         }
 
         public void ToggleInventoryShowing()

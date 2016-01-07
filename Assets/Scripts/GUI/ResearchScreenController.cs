@@ -4,6 +4,7 @@ using Assets.Scripts.Research;
 using System.Linq;
 using Assets.Scripts.Managers;
 using System;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.GUI
 {
@@ -15,6 +16,8 @@ namespace Assets.Scripts.GUI
         private GameObject EngineTab;
         [SerializeField]
         private GameObject SupportTab;
+        [SerializeField]
+        private Text ScrapAmount;
 
         [SerializeField]
         private List<ResearchObjectUI> weaponResearchObjectsUI;
@@ -70,6 +73,8 @@ namespace Assets.Scripts.GUI
             engineResearchObjectsUI.ForEach(obj => obj.CheckIfAvailable());
             supportResearchObjectsUI.ForEach(obj => obj.SetUp());
             supportResearchObjectsUI.ForEach(obj => obj.CheckIfAvailable());
+
+            ScrapAmount.text = "Scrap: " + PlayerManager.instance.CollectedScrap;
         }
     }
 }
