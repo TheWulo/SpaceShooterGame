@@ -13,6 +13,7 @@ namespace Assets.Scripts.GUI
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 GUIManager.instance.ShowWindow(GUIWindowType.Garage);
+                EventManager.GameFinishing.Invoke(new EmptyEventArgs());
             }
         }
     }

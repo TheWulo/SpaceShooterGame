@@ -6,5 +6,7 @@ namespace Assets.Scripts.Managers
     {
         public static EventInvoker<EmptyEventArgs> GameStarting
                 = new EventInvoker<EmptyEventArgs>();
+        public static EventInvoker<EmptyEventArgs> GameFinishing
+                = new EventInvoker<EmptyEventArgs>();
     }
 }

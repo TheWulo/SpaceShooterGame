@@ -68,7 +68,11 @@ namespace Assets.Scripts.Enemy
         {
             int finalDamage = damage - EnemyArmor;
             EnemyHealth -= finalDamage;
-            if (EnemyHealth <= 0) Die();
+            if (EnemyHealth <= 0)
+            {
+                PlayerManager.instance.CollectedScrap += Random.Range(ScrapDropMin, ScrapDropMax);
+                Die();
+            }
         }
 
         protected void Die()
