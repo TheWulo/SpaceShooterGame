@@ -41,5 +41,10 @@ namespace Assets.Scripts.Managers
             }
         }
         #endregion
+
+        public void ClearPlayerPrefs()
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 }
