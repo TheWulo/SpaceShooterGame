@@ -26,7 +26,7 @@ namespace Assets.Scripts.Enemy
         public int AttacksPerMinute;
         public Transform BulletSpawnPoint;
         public GameObject BulletPrefab;
-        private float shootTimer;
+        protected float shootTimer;
 
         [Header("Enemy Stats: Others")]
         public int ScrapDropMin;
