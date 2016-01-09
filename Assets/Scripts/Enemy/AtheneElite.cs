@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Projectiles;
 
-namespace Assets.Scripts.Enemy.Projectiles
+namespace Assets.Scripts.Enemy
 {
     public class AtheneElite : Enemy
     {
@@ -22,6 +23,8 @@ namespace Assets.Scripts.Enemy.Projectiles
 
         protected override void Shoot()
         {
+            if (gameObject.transform.position.x <= -3) return;
+
             weapon1TimerCurrent += Time.deltaTime;
             weapon2TimerCurrent += Time.deltaTime;
             weapon3TimerCurrent += Time.deltaTime;
@@ -31,7 +34,7 @@ namespace Assets.Scripts.Enemy.Projectiles
                 weapon1TimerCurrent -= 60f / AttacksPerMinute;
                 var bullet = Instantiate(BulletPrefab, Weapon1SpawnSpot.position, BulletPrefab.transform.rotation) as GameObject;
                 bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<EnemyProjectile>().SetUp(AttackDamage, BulletSpeed);
+                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
 
                 var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
                 bullet.transform.rotation = rotationToPlayer;
@@ -42,7 +45,7 @@ namespace Assets.Scripts.Enemy.Projectiles
                 weapon2TimerCurrent -= 60f / AttacksPerMinute;
                 var bullet = Instantiate(BulletPrefab, Weapon2SpawnSpot.position, BulletPrefab.transform.rotation) as GameObject;
                 bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<EnemyProjectile>().SetUp(AttackDamage, BulletSpeed);
+                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
 
                 var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
                 bullet.transform.rotation = rotationToPlayer;
@@ -53,7 +56,7 @@ namespace Assets.Scripts.Enemy.Projectiles
                 weapon3TimerCurrent -= 60f / AttacksPerMinute;
                 var bullet = Instantiate(BulletPrefab, Weapon3SpawnSpot.position, BulletPrefab.transform.rotation) as GameObject;
                 bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<EnemyProjectile>().SetUp(AttackDamage, BulletSpeed);
+                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
 
                 var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
                 bullet.transform.rotation = rotationToPlayer;

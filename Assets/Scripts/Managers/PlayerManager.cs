@@ -9,22 +9,45 @@ namespace Assets.Scripts.Managers
     {
         private bool isInitialized;
 
-        public int CollectedScrap = 0;
+        public int CollectedScrap;
 
         public void Init()
         {
             EventManager.GameStarting.Listeners += OnGameStarting;
+            EventManager.ScrapMetalCollected.Listeners += OnScrapMetalCollected;
+            EventManager.GameFinishing.Listeners += OnGameFinishing;
+
+            if (PlayerPrefs.HasKey("CollectedScrap"))
+            {
+
+                CollectedScrap = PlayerPrefs.GetInt("CollectedScrap");
+            }
+            else
+            {
+                CollectedScrap = 0;
+            }
+
             isInitialized = true;
         }
 
-        private void OnGameStarting(EmptyEventArgs args)
+        private void OnGameFinishing(EmptyEventArgs args)
         {
-            VehiclesManager.instance.PlayerShipCurrent.PrepareShipForLaunch();
+            PlayerPrefs.SetInt("CollectedScrap", CollectedScrap);
         }
 
         public bool IsInitialized()
         {
             return isInitialized;
+        }
+
+        private void OnScrapMetalCollected(ScrapMetalCollectedEventArgs args)
+        {
+            CollectedScrap += args.ScrapMetal.ScrapAmount;
+        }
+
+        private void OnGameStarting(EmptyEventArgs args)
+        {
+            VehiclesManager.instance.PlayerShipCurrent.PrepareShipForLaunch();
         }
 
         void Update()

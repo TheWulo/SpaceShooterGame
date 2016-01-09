@@ -3,15 +3,18 @@ using UnityEngine.UI;
 using Assets.Scripts.Attachables;
 using System.Collections.Generic;
 using Assets.Scripts.Managers;
+using Assets.Scripts.Ship;
 
 namespace Assets.Scripts.Research
 {
     public enum ResearchObjectState { Unlocked, Available, Locked }
+    public enum ResearchObjectType { Attachable, Ship }
 
     public class ResearchObjectUI : MonoBehaviour
     {
         [Header("Research Object")]
         public string AttachableID;
+        public ResearchObjectType Type = ResearchObjectType.Attachable;
         public ResearchObjectState State;
         [SerializeField]
         private List<ResearchObjectUI> requiredResearchedObjects;
@@ -26,23 +29,44 @@ namespace Assets.Scripts.Research
 
         public void SetUp()
         {
-            var attach = AttachablesDatabase.instance.GetAttachable(AttachableID);
-            UnlockableImage.sprite = attach.PresentationSprite;
-            UnlockableName.text = attach.AttachableName;
-            if (ResearchManager.instance.IsAttachableUnlocked(AttachableID))
+            if (Type == ResearchObjectType.Attachable)
             {
-                UnlockablePrice.text = "UNLOCKED!";
-                State = ResearchObjectState.Unlocked;
-                GetComponent<Button>().interactable = true;
-                GetComponent<Image>().color = new Color(1, 1, 0, 1);
+                var attach = AttachablesDatabase.instance.GetAttachable(AttachableID);
+                UnlockableImage.sprite = attach.PresentationSprite;
+                UnlockableName.text = attach.AttachableName;
+                if (ResearchManager.instance.IsAttachableUnlocked(AttachableID))
+                {
+                    UnlockablePrice.text = "UNLOCKED!";
+                    State = ResearchObjectState.Unlocked;
+                    GetComponent<Button>().interactable = true;
+                    GetComponent<Image>().color = new Color(1, 1, 0, 1);
+                }
+                else
+                {
+                    UnlockablePrice.text = "Cost: " + attach.ScrapCost;
+                    State = ResearchObjectState.Locked;
+                    GetComponent<Button>().interactable = false;
+                }
             }
-            else
+            if (Type == ResearchObjectType.Ship)
             {
-                UnlockablePrice.text = "Cost: " + attach.ScrapCost;
-                State = ResearchObjectState.Locked;
-                GetComponent<Button>().interactable = false;
+                var ship = ShipsDatabase.instance.GetShip(AttachableID);
+                UnlockableImage.sprite = ship.ShipDefaultSprite;
+                UnlockableName.text = ship.ShipName;
+                if (VehiclesManager.instance.IsShipUnlocked(AttachableID))
+                {
+                    UnlockablePrice.text = "UNLOCKED!";
+                    State = ResearchObjectState.Unlocked;
+                    GetComponent<Button>().interactable = true;
+                    GetComponent<Image>().color = new Color(1, 1, 0, 1);
+                }
+                else
+                {
+                    UnlockablePrice.text = "Cost: " + ship.ScrapCost;
+                    State = ResearchObjectState.Locked;
+                    GetComponent<Button>().interactable = false;
+                }
             }
-
         }
 
         public void CheckIfAvailable()
@@ -67,7 +91,12 @@ namespace Assets.Scripts.Research
         public void TryUnlock()
         {
             if (State == ResearchObjectState.Available)
-                ResearchManager.instance.TryUnlock(AttachableID);
+            {
+                if (Type == ResearchObjectType.Attachable)
+                    ResearchManager.instance.TryUnlockAttachable(AttachableID);
+                if (Type == ResearchObjectType.Ship)
+                    ResearchManager.instance.TryUnlockShip(AttachableID);
+            }
         }
     }
 }

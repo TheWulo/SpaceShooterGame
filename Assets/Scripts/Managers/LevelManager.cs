@@ -17,7 +17,6 @@ namespace Assets.Scripts.Managers
         {
             EventManager.GameStarting.Listeners += OnGameStarting;
             EventManager.GameFinishing.Listeners += OnGameFinishing;
-            EventManager.EnemySpawned.Listeners += OnEnemySpawned;
 
             isInitialized = true;
         }
@@ -38,11 +37,6 @@ namespace Assets.Scripts.Managers
         {
             Destroy(CurrentLevel.gameObject);
             CurrentLevel = null;
-        }
-
-        private void OnEnemySpawned(EnemySpawnedEventArgs args)
-        {
-            args.SpawnedEnemy.transform.SetParent(CurrentLevel.transform);
         }
     }
 }

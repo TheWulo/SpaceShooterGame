@@ -12,7 +12,7 @@ namespace Assets.Scripts.Attachables
         public float BulletSpeed;
         public bool ToggleFireOn;
 
-        private float ShootTimer;
+        protected float ShootTimer;
 
         [Header("Bullets")]
         public GameObject BulletPrefab;
@@ -21,7 +21,7 @@ namespace Assets.Scripts.Attachables
         public virtual void Shoot()
         {
             var projectile = (GameObject)Instantiate(BulletPrefab, BulletsSpawnPoint.transform.position, BulletsSpawnPoint.transform.rotation);
-            projectile.GetComponent<Projectile>().SetUp(Damage, BulletSpeed);
+            projectile.GetComponent<Projectile>().SetUp(Damage, BulletSpeed, Vector3.right);
             projectile.transform.SetParent((SceneContainer.instance.gameObject.transform));
             ShootTimer = 0;
         }

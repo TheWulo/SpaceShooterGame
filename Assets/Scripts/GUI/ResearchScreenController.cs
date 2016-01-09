@@ -20,15 +20,42 @@ namespace Assets.Scripts.GUI
         private Text ScrapAmount;
 
         [SerializeField]
+        private GameObject weaponTabContent;
+        [SerializeField]
+        private GameObject enginesTabContent;
+        [SerializeField]
+        private GameObject supportTabContent;
+
         private List<ResearchObjectUI> weaponResearchObjectsUI;
-        [SerializeField]
         private List<ResearchObjectUI> engineResearchObjectsUI;
-        [SerializeField]
         private List<ResearchObjectUI> supportResearchObjectsUI;
 
         void Awake()
         {
             EventManager.AttachableResearched.Listeners += OnAttachableResearched;
+            EventManager.ShipResearched.Listeners += OnShipResearched;
+
+            weaponResearchObjectsUI = new List<ResearchObjectUI>();
+            engineResearchObjectsUI = new List<ResearchObjectUI>();
+            supportResearchObjectsUI = new List<ResearchObjectUI>();
+
+            foreach (var UIObject in weaponTabContent.GetComponentsInChildren<ResearchObjectUI>())
+            {
+                weaponResearchObjectsUI.Add(UIObject);
+            }
+            foreach (var UIObject in enginesTabContent.GetComponentsInChildren<ResearchObjectUI>())
+            {
+                engineResearchObjectsUI.Add(UIObject);
+            }
+            foreach (var UIObject in supportTabContent.GetComponentsInChildren<ResearchObjectUI>())
+            {
+                supportResearchObjectsUI.Add(UIObject);
+            }
+        }
+
+        private void OnShipResearched(ShipResearchedEventArgs args)
+        {
+            RefreshWindow();
         }
 
         private void OnAttachableResearched(AttachableResearchedEventArgs args)

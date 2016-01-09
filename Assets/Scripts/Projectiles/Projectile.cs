@@ -6,13 +6,23 @@ namespace Assets.Scripts.Projectiles
     {
         public int Damage;
         public float Speed;
+        public Vector3 Direction;
 
         private float lifeTimer = 10;
 
-        void Update()
+        protected virtual void Update()
         {
-            gameObject.transform.Translate(Vector3.right * Speed * Time.deltaTime);
+            Move();
+            DestroyAfterTime();
+        }
 
+        protected virtual void Move()
+        {
+            gameObject.transform.Translate(Direction * Speed * Time.deltaTime);
+        }
+
+        protected virtual void DestroyAfterTime()
+        {
             lifeTimer -= Time.deltaTime;
             if (lifeTimer < 0)
             {
@@ -20,10 +30,11 @@ namespace Assets.Scripts.Projectiles
             }
         }
 
-        public void SetUp(int damage, float speed)
+        public virtual void SetUp(int damage, float speed, Vector3 direction)
         {
             Speed = speed;
             Damage = damage;
+            Direction = direction;
         }
     }
 }

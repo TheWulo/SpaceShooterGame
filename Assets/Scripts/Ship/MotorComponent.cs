@@ -6,6 +6,7 @@ namespace Assets.Scripts.Ship
     public class MotorComponent : MonoBehaviour
     {
         public float MovementSpeed;
+        public float Evasion;
 
         private ShipBase controlledShip;
 
@@ -23,6 +24,9 @@ namespace Assets.Scripts.Ship
         {
             MovementSpeed = 0;
             controlledShip.EngineSpots.ForEach(spot => MovementSpeed += spot.GetEngine().Speed);
+            Evasion = 0;
+            controlledShip.EngineSpots.ForEach(spot => Evasion += spot.GetEngine().Evasion);
+            if (Evasion > 60) Evasion = 60;
         }
 
         void HandleMovement()

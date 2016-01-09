@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Assets.Scripts.Managers;
+using Assets.Scripts.Scrap;
 
 namespace Assets.Scripts.Enviroment.Athene
 {
@@ -7,6 +9,7 @@ namespace Assets.Scripts.Enviroment.Athene
     {
         public List<GameObject> AsteroidsToDrop;
         public float secondAsteroidSpawnDistance;
+        public bool WillDropScrap;
 
         public float movementSpeed;
 
@@ -24,7 +27,12 @@ namespace Assets.Scripts.Enviroment.Athene
                     var randomAddPosition = Random.insideUnitSphere * secondAsteroidSpawnDistance;
                     randomAddPosition.z = 0;
 
-                    Instantiate(asteroid, gameObject.transform.position + randomAddPosition, gameObject.transform.rotation * Quaternion.Euler(0,0,Random.Range(-15,15)));
+                    var semiAsteroid = Instantiate(asteroid, gameObject.transform.position + randomAddPosition, gameObject.transform.rotation * Quaternion.Euler(0, 0, Random.Range(-15, 15))) as GameObject;
+                    semiAsteroid.transform.SetParent(LevelManager.instance.CurrentLevel.transform);
+                    if (WillDropScrap)
+                    {
+                        semiAsteroid.GetComponent<ScrapMetal>().SetUp((int)Random.Range(0, 15));
+                    }
                 }
                 Destroy(other.gameObject);
                 Destroy(gameObject);

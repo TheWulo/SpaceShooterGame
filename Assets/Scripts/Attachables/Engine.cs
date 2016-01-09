@@ -6,6 +6,6 @@ namespace Assets.Scripts.Attachables
     {
         [Header("Engine")]
         public float Speed;
-        public float AgilityBonus;
+        public float Evasion;
     }
 }

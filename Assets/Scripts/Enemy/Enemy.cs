@@ -45,28 +45,35 @@ namespace Assets.Scripts.Enemy
 
         protected virtual void Shoot()
         {
+            if (gameObject.transform.position.x <= -3) return;
+
             shootTimer += Time.deltaTime;
             if (shootTimer >= 60f / AttacksPerMinute)
             {
                 shootTimer -= 60f / AttacksPerMinute;
                 var bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletPrefab.transform.rotation) as GameObject;
                 bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<EnemyProjectile>().SetUp(AttackDamage, BulletSpeed);
+                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
             }
         }
 
-        protected void OnTriggerEnter2D(Collider2D other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if (other.gameObject.tag == "PlayerProjectile")
             {
-                TakeDamage(other.gameObject.GetComponent<Projectile>().Damage);
+                TakeDamage(other.gameObject.GetComponent<Projectile>().Damage, other.GetComponent<PlayerProjectile>().ProjectileType);
                 Destroy(other.gameObject);
             }
         }
 
-        protected void TakeDamage(int damage)
+        protected virtual void TakeDamage(int damage, PlayerProjectileType type)
         {
-            int finalDamage = damage - EnemyArmor;
+            int finalDamage = damage;
+
+            if (type != PlayerProjectileType.Laser) finalDamage -= EnemyArmor; //Laser goes through Armor
+
+            if (finalDamage < 0) finalDamage = 0;
+  
             EnemyHealth -= finalDamage;
             if (EnemyHealth <= 0)
             {
@@ -75,7 +82,7 @@ namespace Assets.Scripts.Enemy
             }
         }
 
-        protected void Die()
+        protected virtual void Die()
         {
             Destroy(gameObject);
         }

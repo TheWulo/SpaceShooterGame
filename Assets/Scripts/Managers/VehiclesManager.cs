@@ -7,7 +7,7 @@ namespace Assets.Scripts.Managers
 {
     public class VehiclesManager : Singleton<VehiclesManager>, IInitializable
     {
-        public List<string> PlayerShips;
+        private List<string> PlayerShips;
         public string PlayerCurrentShipID;
         public ShipBase PlayerShipCurrent;
 
@@ -16,14 +16,20 @@ namespace Assets.Scripts.Managers
         #region IInitializable
         public void Init()
         {
+            EventManager.GameFinishing.Listeners += OnGameFinishing;
+
             PlayerShips = new List<string>();
 
-            DebugUnlockAllShips();
+            LoadShipsFromPlayerPrefs();
 
             PlayerCurrentShipID = "StarDart";
-            PlayerShipCurrent = ShipsDatabase.instance.GetShip(PlayerShips[0]);
 
             isInitialized = true;
+        }
+
+        private void OnGameFinishing(EmptyEventArgs args)
+        {
+            Destroy(PlayerShipCurrent.gameObject);
         }
 
         public bool IsInitialized()
@@ -32,12 +38,80 @@ namespace Assets.Scripts.Managers
         }
         #endregion
 
-        private void DebugUnlockAllShips()
+        public bool TryUnlockNewShip(string shipID)
+        {
+            foreach (var unlockedShip in PlayerShips)
+            {
+                if (shipID == unlockedShip)
+                {
+                    Debug.Log("Ship Already Unloced!");
+                    return false;
+                }
+            }
+
+            if (ShipsDatabase.instance.GetShip(shipID).ScrapCost <= PlayerManager.instance.CollectedScrap)
+            {
+                PlayerManager.instance.CollectedScrap -= ShipsDatabase.instance.GetShip(shipID).ScrapCost;
+                PlayerShips.Add(shipID);
+                EventManager.ShipResearched.Invoke(new ShipResearchedEventArgs(shipID));
+                SaveShipsToPlayerPrefs();
+            }
+            return true;
+        }
+
+        void SaveShipsToPlayerPrefs()
+        {
+            foreach (var unlockedShip in PlayerShips)
+            {
+                PlayerPrefs.SetInt(unlockedShip + "_unlocked", 1);
+            }
+        }
+
+        void LoadShipsFromPlayerPrefs()
         {
             foreach (var ship in ShipsDatabase.instance.GetAllShips())
             {
-                PlayerShips.Add(ship.ShipID);
+                if (PlayerPrefs.HasKey(ship.ShipID + "_unlocked"))
+                {
+                    PlayerShips.Add(ship.ShipID);
+                }
             }
+            if (PlayerShips.Count == 0) //No unlocked Ships
+            {
+                PlayerShips.Add("StarDart");
+                SaveShipsToPlayerPrefs();
+            }
+        }
+
+        public void ChangeShipToNext()
+        {
+            for (int i = 0; i < PlayerShips.Count; i++)
+            {
+                if (PlayerShips[i] == PlayerCurrentShipID && i != PlayerShips.Count - 1 )
+                {
+                    PlayerCurrentShipID = PlayerShips[i + 1];
+                }
+            }
+        }
+
+        public void ChangeShipToPrevious()
+        {
+            for (int i = 0; i < PlayerShips.Count; i++)
+            {
+                if (PlayerShips[i] == PlayerCurrentShipID && i != 0)
+                {
+                    PlayerCurrentShipID = PlayerShips[i - 1];
+                }
+            }
+        }
+
+        public bool IsShipUnlocked(string shipID)
+        {
+            foreach (var ship in PlayerShips)
+            {
+                if (ship == shipID) return true;
+            }
+            return false;
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Assets.Scripts.Managers
             return playerUnlockedAttachables.ToArray();
         }
 
-        public bool TryUnlock(string attachableID)
+        public bool TryUnlockAttachable(string attachableID)
         {
             foreach (var attach in playerUnlockedAttachables)
             {
@@ -84,6 +84,19 @@ namespace Assets.Scripts.Managers
             else
             {
                 return false;
+            }
+        }
+
+        public bool TryUnlockShip(string shipID)
+        {
+            return VehiclesManager.instance.TryUnlockNewShip(shipID);
+        }
+
+        void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                PlayerManager.instance.CollectedScrap += 1000;
             }
         }
     }

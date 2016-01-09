@@ -99,61 +99,6 @@ namespace Assets.Scripts.GUI
             base.Hide();
         }
 
-        void Update()
-        {
-            if (!IsActive) return;
-
-            DebugChangeShips();
-        }
-
-        private void DebugChangeShips()
-        {
-            bool changed = false;
-
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "StarDart";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "StarBug";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "WuL0Wing";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha4))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "XAT801";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha5))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "828GEagle";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha6))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "Harbinger";
-                changed = true;
-            }
-            if (Input.GetKeyDown(KeyCode.Alpha7))
-            {
-                VehiclesManager.instance.PlayerCurrentShipID = "TheCorkscrew";
-                changed = true;
-            }
-
-            if (changed)
-            {
-                ShowCurrentShip();
-                VehicleAssemblyManager.instance.Prepare();
-            }
-
-        }
-
         private void ShowCurrentShip()
         {
             if (currentShownUI != null) Destroy(currentShownUI.gameObject);
@@ -215,5 +160,23 @@ namespace Assets.Scripts.GUI
         }
 
         #endregion
+
+        public void OnNextShipButton()
+        {
+            VehiclesManager.instance.ChangeShipToNext();
+            ShowCurrentShip();
+            PopulateInventoryScreen();
+
+            VehicleAssemblyManager.instance.Prepare();
+        }
+
+        public void OnPrevShipButton()
+        {
+            VehiclesManager.instance.ChangeShipToPrevious();
+            ShowCurrentShip();
+            PopulateInventoryScreen();
+
+            VehicleAssemblyManager.instance.Prepare();
+        }
     }
 }
