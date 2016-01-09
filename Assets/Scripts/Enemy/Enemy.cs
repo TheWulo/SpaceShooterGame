@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Managers;
 using Assets.Scripts.Projectiles;
+using System.Collections.Generic;
+using Assets.Scripts.Scrap;
 
 namespace Assets.Scripts.Enemy
 {
@@ -24,13 +26,15 @@ namespace Assets.Scripts.Enemy
         public int AttackDamage;
         public float BulletSpeed;
         public int AttacksPerMinute;
-        public Transform BulletSpawnPoint;
+        public List<Transform> BulletSpawnPoint;
         public GameObject BulletPrefab;
         protected float shootTimer;
 
         [Header("Enemy Stats: Others")]
+        public int ScrapDroppedInstances = 1;
         public int ScrapDropMin;
         public int ScrapDropMax;
+        public GameObject ScrapPrefab;
 
         protected virtual void Update()
         {
@@ -51,9 +55,12 @@ namespace Assets.Scripts.Enemy
             if (shootTimer >= 60f / AttacksPerMinute)
             {
                 shootTimer -= 60f / AttacksPerMinute;
-                var bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletPrefab.transform.rotation) as GameObject;
-                bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
+                foreach (var spawnPoint in BulletSpawnPoint)
+                {
+                    var bullet = Instantiate(BulletPrefab, spawnPoint.position, BulletPrefab.transform.rotation) as GameObject;
+                    bullet.transform.SetParent(SceneContainer.instance.transform);
+                    bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
+                }
             }
         }
 
@@ -84,7 +91,24 @@ namespace Assets.Scripts.Enemy
 
         protected virtual void Die()
         {
+            DropScrap();
             Destroy(gameObject);
+        }
+
+        protected virtual void DropScrap()
+        {
+            for (int i = 0; i < ScrapDroppedInstances; i++)
+            {
+                int scrapAmount = Random.Range(ScrapDropMin, ScrapDropMax);
+                if (scrapAmount == 0) return;
+
+                var randomAddPosition = Random.insideUnitSphere * 0.2f;
+                randomAddPosition.z = 0;
+
+                var scrap = Instantiate(ScrapPrefab, gameObject.transform.position + randomAddPosition, gameObject.transform.rotation * Quaternion.Euler(0, 0, 90 + Random.Range(-15, 15))) as GameObject;
+                scrap.transform.SetParent(LevelManager.instance.CurrentLevel.transform);
+                scrap.GetComponent<ScrapMetal>().SetUp(scrapAmount);
+            }
         }
     }
 }

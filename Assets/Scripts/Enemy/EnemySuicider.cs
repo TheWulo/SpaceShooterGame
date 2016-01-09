@@ -6,6 +6,8 @@ namespace Assets.Scripts.Enemy
 {
     public class EnemySuicider : Enemy
     {
+        public float VerticalMovementSpeed = 1.0f;
+
         protected override void Update()
         {
             Move();
@@ -17,11 +19,11 @@ namespace Assets.Scripts.Enemy
             
             if (gameObject.transform.position.y < VehiclesManager.instance.PlayerShipCurrent.transform.position.y)
             {
-                gameObject.transform.Translate(Vector3.up * MovementSpeed * Time.deltaTime / 1000f, Space.World);
+                gameObject.transform.Translate(Vector3.up * MovementSpeed * Time.deltaTime / 1000f * VerticalMovementSpeed, Space.World);
             }
             if (gameObject.transform.position.y > VehiclesManager.instance.PlayerShipCurrent.transform.position.y)
             {
-                gameObject.transform.Translate(Vector3.down * MovementSpeed * Time.deltaTime / 1000f, Space.World);
+                gameObject.transform.Translate(Vector3.down * MovementSpeed * Time.deltaTime / 1000f * VerticalMovementSpeed, Space.World);
             }
         }
 

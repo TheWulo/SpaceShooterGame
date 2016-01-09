@@ -1,6 +1,7 @@
 ﻿using System;
 using Assets.Scripts.Scrap;
 using Assets.Scripts.Projectiles;
+using Assets.Scripts.Attachables;
 
 namespace Assets.Scripts.Managers
 {
@@ -20,6 +21,8 @@ namespace Assets.Scripts.Managers
                 = new EventInvoker<PlayerTookDamageEventArgs>();
         public static EventInvoker<EmptyEventArgs> PlayerEvadedProjectile
                 = new EventInvoker<EmptyEventArgs>();
+        public static EventInvoker<WeaponFiredEventArgs> WeaponFired
+                = new EventInvoker<WeaponFiredEventArgs>();
 
     }
 
@@ -50,6 +53,16 @@ namespace Assets.Scripts.Managers
         public PlayerTookDamageEventArgs(int damage)
         {
             Damage = damage;
+        }
+    }
+
+    public class WeaponFiredEventArgs : EventArgs
+    {
+        public readonly Weapon Weapon;
+
+        public WeaponFiredEventArgs(Weapon weapon)
+        {
+            Weapon = weapon;
         }
     }
 }

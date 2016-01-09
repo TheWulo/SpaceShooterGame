@@ -14,12 +14,15 @@ namespace Assets.Scripts.Enemy
             if (shootTimer >= 60f / AttacksPerMinute)
             {
                 shootTimer -= 60f / AttacksPerMinute;
-                var bullet = Instantiate(BulletPrefab, BulletSpawnPoint.position, BulletPrefab.transform.rotation) as GameObject;
-                bullet.transform.SetParent(SceneContainer.instance.transform);
-                bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
+                foreach (var spawnPoint in BulletSpawnPoint)
+                {
+                    var bullet = Instantiate(BulletPrefab, spawnPoint.position, BulletPrefab.transform.rotation) as GameObject;
+                    bullet.transform.SetParent(SceneContainer.instance.transform);
+                    bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
 
-                var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
-                bullet.transform.rotation = rotationToPlayer;
+                    var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
+                    bullet.transform.rotation = rotationToPlayer;
+                }
             }
         }
     }

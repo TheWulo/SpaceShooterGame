@@ -17,7 +17,7 @@ namespace Assets.Scripts.Enemy
             if (spawnTimer >= 60f / spawnsPerMinute)
             {
                 spawnTimer -= 60f / spawnsPerMinute;
-                var enemy = Instantiate(EnemyToSpawn, new Vector3(5, Random.Range(-2f, 2f), 0), EnemyToSpawn.transform.rotation) as GameObject;
+                var enemy = Instantiate(EnemyToSpawn, new Vector3(5, Random.Range(-1.8f, 1.8f), 0), EnemyToSpawn.transform.rotation) as GameObject;
                 EventManager.EnemySpawned.Invoke(new EnemySpawnedEventArgs(enemy.GetComponent<Enemy>()));
             }
         }

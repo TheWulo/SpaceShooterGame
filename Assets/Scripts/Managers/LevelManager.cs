@@ -9,7 +9,9 @@ namespace Assets.Scripts.Managers
         private bool isInitialized;
 
         [SerializeField]
-        private GameObject Level1;
+        private GameObject LevelAthene1;
+        [SerializeField]
+        private GameObject LevelFelgor1;
 
         public GameObject CurrentLevel;
 
@@ -30,7 +32,16 @@ namespace Assets.Scripts.Managers
         
         private void OnGameStarting(EmptyEventArgs args)
         {
-            CurrentLevel = Instantiate(Level1);
+            int level = UnityEngine.Random.Range(0, 2);
+
+            if (level == 0)
+            {
+                CurrentLevel = Instantiate(LevelAthene1);
+            }
+            else
+            {
+                CurrentLevel = Instantiate(LevelFelgor1);
+            }
         }
 
         private void OnGameFinishing(EmptyEventArgs args)

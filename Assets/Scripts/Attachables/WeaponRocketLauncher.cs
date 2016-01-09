@@ -15,6 +15,8 @@ namespace Assets.Scripts.Attachables
             ShootTimer = 0;
 
             projectile.GetComponent<PlayerRocketProjectile>().SetUpTarget(FindClosetEnemy());
+
+            EventManager.WeaponFired.Invoke(new WeaponFiredEventArgs(this));
         }
 
         private Enemy.Enemy FindClosetEnemy()

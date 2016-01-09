@@ -55,6 +55,8 @@ namespace Assets.Scripts.GUI
             else
             {
                 args.SelectedSlot.DetachItem();
+                EnableOnlyCorrectInventroy(args.SelectedSlot.Type);
+                currentSelectedSlot = args.SelectedSlot;
             }
             if (!inventoryShowing)
             {
@@ -68,12 +70,17 @@ namespace Assets.Scripts.GUI
             if (currentSelectedSlot == null) return;
 
             currentSelectedSlot.AttachItem(args.Item);
-            currentSelectedSlot = null;
-            EnableAllInventory();
+            //currentSelectedSlot = null;
+            //EnableAllInventory();
         }
 
         public void OnAssemblyFinished()
         {
+            if (!VehiclesManager.instance.PlayerShipCurrent.IsReadyToFly())
+            {
+                Debug.Log("Ship not ready!");
+                return;
+            }
             EventManager.GameStarting.Invoke(new EmptyEventArgs());
             GUIManager.instance.ShowWindow(GUIWindowType.Play);
         }
@@ -108,7 +115,7 @@ namespace Assets.Scripts.GUI
             currentShownUI.gameObject.transform.SetParent(gameObject.transform);
             currentShownUI.gameObject.transform.position = shipUISpawnPlace.transform.position;
             currentShownUI.gameObject.transform.localScale = new Vector3(1, 1, 1);
-            currentShownUI.gameObject.transform.SetSiblingIndex(1);
+            currentShownUI.gameObject.transform.SetSiblingIndex(2);
 
             shipNameText.text = ShipsDatabase.instance.GetShip(VehiclesManager.instance.PlayerCurrentShipID).ShipName;
         }
@@ -177,6 +184,12 @@ namespace Assets.Scripts.GUI
             PopulateInventoryScreen();
 
             VehicleAssemblyManager.instance.Prepare();
+        }
+
+        public void DeselectSlot()
+        {
+            currentSelectedSlot = null;
+            EnableAllInventory();
         }
     }
 }

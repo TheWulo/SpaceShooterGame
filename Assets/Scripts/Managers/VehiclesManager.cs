@@ -29,7 +29,7 @@ namespace Assets.Scripts.Managers
 
         private void OnGameFinishing(EmptyEventArgs args)
         {
-            Destroy(PlayerShipCurrent.gameObject);
+            //Destroy(PlayerShipCurrent.gameObject);
         }
 
         public bool IsInitialized()
@@ -90,6 +90,7 @@ namespace Assets.Scripts.Managers
                 if (PlayerShips[i] == PlayerCurrentShipID && i != PlayerShips.Count - 1 )
                 {
                     PlayerCurrentShipID = PlayerShips[i + 1];
+                    return;
                 }
             }
         }
@@ -101,6 +102,7 @@ namespace Assets.Scripts.Managers
                 if (PlayerShips[i] == PlayerCurrentShipID && i != 0)
                 {
                     PlayerCurrentShipID = PlayerShips[i - 1];
+                    return;
                 }
             }
         }

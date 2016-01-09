@@ -4,12 +4,15 @@ using Assets.Scripts.Managers;
 
 namespace Assets.Scripts.Attachables
 {
+    public enum WeaponTypes { Bullet, Laser, EMP, Rocket, AtheneDefault}
+
     public class Weapon : Attachable
     {
         [Header("Weapon")]
         public int Damage;
         public int ShotsPerMinute;
         public float BulletSpeed;
+        public WeaponTypes WeaponType;
         public bool ToggleFireOn;
 
         protected float ShootTimer;
@@ -24,6 +27,7 @@ namespace Assets.Scripts.Attachables
             projectile.GetComponent<Projectile>().SetUp(Damage, BulletSpeed, Vector3.right);
             projectile.transform.SetParent((SceneContainer.instance.gameObject.transform));
             ShootTimer = 0;
+            EventManager.WeaponFired.Invoke(new WeaponFiredEventArgs(this));
         }
 
         void Update()

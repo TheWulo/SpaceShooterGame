@@ -73,5 +73,22 @@ namespace Assets.Scripts.Ship
                 Destroy(gameObject);
             }
         }
+
+        public virtual bool IsReadyToFly()
+        {
+            foreach (var spot in WeaponSpots)
+            {
+                if (!spot.HasElement) return false;
+            }
+            foreach (var spot in SupportSpots)
+            {
+                if (!spot.HasElement) return false;
+            }
+            foreach (var spot in EngineSpots)
+            {
+                if (!spot.HasElement) return false;
+            }
+            return true;
+        }
     }
 }
