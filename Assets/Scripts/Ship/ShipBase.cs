@@ -14,18 +14,22 @@ namespace Assets.Scripts.Ship
         public string ShipName;
         public int ScrapCost;
         public Sprite ShipDefaultSprite;
+        public Sprite ShipDamageStage1Sprite;
+        public Sprite ShipDamageStage2Sprite;
+        public Sprite ShipDamageStage3Sprite;
 
         public int Health;
         public int Agility;
         public int Energy;
 
-        private int currentHealth;
+        public int CurrentHealth;
         private float currentAgility;
         private int currentEnergy;
 
         [Header("Ship Components")]
         public WeaponsComponent WeaponComponent;
         public MotorComponent MotorComponent;
+        public SpriteRenderer ShipSpriteRenderer;
 
         [Header("Ship Slots")]
         public List<WeaponSpot> WeaponSpots;
@@ -39,6 +43,7 @@ namespace Assets.Scripts.Ship
         {
             WeaponComponent.Prepare();
             MotorComponent.Prepare();
+            CurrentHealth = Health;
 
             gameObject.transform.position = Vector3.zero;
         }
@@ -63,14 +68,35 @@ namespace Assets.Scripts.Ship
 
         public virtual void TakeDamage(int amount)
         {
-            Health -= amount;
+            CurrentHealth -= amount;
             EventManager.PlayerTookDamage.Invoke(new PlayerTookDamageEventArgs(amount));
 
-            if (Health <= 0)
+            if (CurrentHealth <= 0)
             {
                 EventManager.PlayerShipDestroyed.Invoke(new EmptyEventArgs());
                 EventManager.GameFinishing.Invoke(new EmptyEventArgs());
                 Destroy(gameObject);
+                return;
+            }
+
+            ChangeSpriteToDamageStage();
+        }
+
+        void ChangeSpriteToDamageStage()
+        {
+            if (ShipDamageStage1Sprite == null || ShipDamageStage2Sprite == null || ShipDamageStage3Sprite == null) return;
+
+            if (CurrentHealth <= Health * 0.25f)
+            {
+                ShipSpriteRenderer.sprite = ShipDamageStage3Sprite;
+            }
+            else if (CurrentHealth <= Health * 0.5f)
+            {
+                ShipSpriteRenderer.sprite = ShipDamageStage2Sprite;
+            }
+            else if (CurrentHealth <= Health * 0.75f)
+            {
+                ShipSpriteRenderer.sprite = ShipDamageStage1Sprite;
             }
         }
 

@@ -20,7 +20,7 @@ namespace Assets.Scripts.Enemy
                     bullet.transform.SetParent(SceneContainer.instance.transform);
                     bullet.GetComponent<Projectile>().SetUp(AttackDamage, BulletSpeed, Vector3.left);
 
-                    var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y, bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x) * 180 / Mathf.PI));
+                    var rotationToPlayer = Quaternion.Euler(new Vector3(0, 0, Mathf.Atan2(bullet.transform.position.y - VehiclesManager.instance.PlayerShipCurrent.transform.position.y + Random.Range(-0.1f, 0.1f), bullet.transform.position.x - VehiclesManager.instance.PlayerShipCurrent.transform.position.x + Random.Range(-0.1f, 0.1f)) * 180 / Mathf.PI));
                     bullet.transform.rotation = rotationToPlayer;
                 }
             }

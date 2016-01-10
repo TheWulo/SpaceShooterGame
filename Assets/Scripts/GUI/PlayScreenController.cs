@@ -27,12 +27,12 @@ namespace Assets.Scripts.GUI
         private void OnGameStarting(EmptyEventArgs args)
         {
             ScrapLabel.text = "Scrap: " + PlayerManager.instance.CollectedScrap;
-            HealthLabel.text = "Health: " + VehiclesManager.instance.PlayerShipCurrent.Health;
+            HealthLabel.text = "Health: " + VehiclesManager.instance.PlayerShipCurrent.CurrentHealth;
         }
 
         private void OnPlayerTookDamage(PlayerTookDamageEventArgs args)
         {
-            HealthLabel.text = "Health: " + VehiclesManager.instance.PlayerShipCurrent.Health;
+            HealthLabel.text = "Health: " + VehiclesManager.instance.PlayerShipCurrent.CurrentHealth;
         }
 
         private void OnScrapMetalCollected(ScrapMetalCollectedEventArgs args)
