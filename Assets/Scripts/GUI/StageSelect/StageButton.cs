@@ -57,7 +57,8 @@ namespace Assets.Scripts.GUI.StageSelect
 
         public void OnStageButton()
         {
-            StagesManager.instance.StartStage(StageID);
+            if (State == StageState.Available)
+                StagesManager.instance.StartStage(StageID);
         }
 
         public void UnlockNextMissions()

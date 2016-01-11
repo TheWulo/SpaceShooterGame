@@ -11,6 +11,8 @@ namespace Assets.Scripts.Managers
                 = new EventInvoker<EmptyEventArgs>();
         public static EventInvoker<EmptyEventArgs> GameFinishing
                 = new EventInvoker<EmptyEventArgs>();
+        public static EventInvoker<EmptyEventArgs> StageFinishing
+                = new EventInvoker<EmptyEventArgs>();
         public static EventInvoker<ScrapMetalCollectedEventArgs> ScrapMetalCollected
                 = new EventInvoker<ScrapMetalCollectedEventArgs>();
         public static EventInvoker<ProjectileHitPlayerEventArgs> ProjectileHitPlayer
@@ -35,6 +37,10 @@ namespace Assets.Scripts.Managers
         //Stages
         public static EventInvoker<StageStartedEventArgs> StageStarted
                 = new EventInvoker<StageStartedEventArgs>();
+
+        //Others
+        public static EventInvoker<EmptyEventArgs> ShowingCredits
+                = new EventInvoker<EmptyEventArgs>();
 
     }
 

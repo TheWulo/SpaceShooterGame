@@ -26,6 +26,7 @@ namespace Assets.Scripts.Managers
         [Header("Music")]
         public AudioSource MainMenu;
         public AudioSource LevelAthene;
+        public AudioSource CreditsMusic;
 
         public void Init()
         {
@@ -37,6 +38,7 @@ namespace Assets.Scripts.Managers
             EventManager.ShieldActivated.Listeners += OnShieldActivated;
             EventManager.ShieldDeactivated.Listeners += OnShieldDeactivated;
             EventManager.ShieldHit.Listeners += OnShieldHit;
+            EventManager.ShowingCredits.Listeners += OnCreditsScreenShown;
             MainMenu.Play();
             isInitialized = true;
         }
@@ -78,14 +80,23 @@ namespace Assets.Scripts.Managers
 
         private void OnGameStarting(EmptyEventArgs args)
         {
+            CreditsMusic.Stop();
             MainMenu.Stop();
             LevelAthene.Play();
         }
 
         private void OnGameFinishing(EmptyEventArgs args)
         {
+            CreditsMusic.Stop();
             LevelAthene.Stop();
             MainMenu.Play();
+        }
+
+        private void OnCreditsScreenShown(EmptyEventArgs args)
+        {
+            CreditsMusic.Play();
+            LevelAthene.Stop();
+            MainMenu.Stop();
         }
 
         #region Events

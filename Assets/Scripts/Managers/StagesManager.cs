@@ -40,15 +40,22 @@ namespace Assets.Scripts.Managers
 
         public void Init()
         {
-            RandomiseAlienRacesForStages();
+            EventManager.StageFinishing.Listeners += OnStageFinishing;
+            EventManager.GameFinishing.Listeners += OnGameFinishing;
 
-            if (FinishedStages.Count == 0)
-            {
-                FinishedStages.Add("0_1");
-                CurrentStageID = "0_1";
-            }
+            ResetStages();
 
             isInitialized = true;
+        }
+
+        private void OnGameFinishing(EmptyEventArgs args)
+        {
+            ResetStages();
+        }
+
+        private void OnStageFinishing(EmptyEventArgs args)
+        {
+            FinishedStages.Add(CurrentStageID);
         }
 
         public bool IsInitialized()
@@ -88,6 +95,19 @@ namespace Assets.Scripts.Managers
             CurrentStageID = stageID;
             EventManager.StageStarted.Invoke(new StageStartedEventArgs(stageID));
             EventManager.GameStarting.Invoke(new EmptyEventArgs());
+        }
+
+        void ResetStages()
+        {
+            RandomiseAlienRacesForStages();
+
+            FinishedStages.Clear();
+
+            if (FinishedStages.Count == 0)
+            {
+                FinishedStages.Add("0_1");
+                CurrentStageID = "0_1";
+            }
         }
     }
 }

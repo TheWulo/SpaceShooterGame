@@ -16,6 +16,7 @@ namespace Assets.Scripts.Managers
             EventManager.GameStarting.Listeners += OnGameStarting;
             EventManager.ScrapMetalCollected.Listeners += OnScrapMetalCollected;
             EventManager.GameFinishing.Listeners += OnGameFinishing;
+            EventManager.StageFinishing.Listeners += OnStageFinishing;
 
             if (PlayerPrefs.HasKey("CollectedScrap"))
             {
@@ -28,6 +29,11 @@ namespace Assets.Scripts.Managers
             }
 
             isInitialized = true;
+        }
+
+        private void OnStageFinishing(EmptyEventArgs args)
+        {
+            VehiclesManager.instance.PlayerShipCurrent.WeaponComponent.HoldAllFire();
         }
 
         private void OnGameFinishing(EmptyEventArgs args)
@@ -52,6 +58,7 @@ namespace Assets.Scripts.Managers
 
         void Update()
         {
+            if (GameManager.instance.CurrentGameState == GameState.Playing)
             HandleInput();
         }
 

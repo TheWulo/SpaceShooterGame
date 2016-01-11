@@ -39,6 +39,11 @@ namespace Assets.Scripts.Ship
         [Header("Ship UI")]
         public ShipUI ShipUIObject;
 
+        void Start()
+        {
+            CurrentHealth = Health;
+        }
+
         public void PrepareShipForLaunch()
         {
             WeaponComponent.Prepare();
@@ -48,8 +53,6 @@ namespace Assets.Scripts.Ship
             {
                 supportSpot.GetSupport().Prepare(ShipID);
             }
-
-            CurrentHealth = Health;
 
             gameObject.transform.position = new Vector3(-2, 0, 0);
         }

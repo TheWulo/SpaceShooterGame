@@ -20,15 +20,21 @@ namespace Assets.Scripts.Managers
         {
             EventManager.GameStarting.Listeners += OnGameStarting;
             EventManager.GameFinishing.Listeners += OnGameFinishing;
+            EventManager.StageFinishing.Listeners += OnStageFinishing;
 
             isInitialized = true;
         }
 
-        
-
         public bool IsInitialized()
         {
             return isInitialized;
+        }
+
+        private void OnStageFinishing(EmptyEventArgs args)
+        {
+            if (CurrentLevel != null)
+                Destroy(CurrentLevel.gameObject);
+            CurrentLevel = null;
         }
         
         private void OnGameStarting(EmptyEventArgs args)

@@ -18,6 +18,7 @@ namespace Assets.Scripts.Managers
         public void Init()
         {
             EventManager.GameStarting.Listeners += OnGameStarting;
+            EventManager.StageFinishing.Listeners += OnStageFinishing;
             foreach(var window in guiWindows)
             {
                 window.GetComponent<IInitializable>().Init();
@@ -25,6 +26,11 @@ namespace Assets.Scripts.Managers
 
             ShowWindow(GUIWindowType.MainMenu);
             isInitialized = true;
+        }
+
+        private void OnStageFinishing(EmptyEventArgs args)
+        {
+            ShowWindow(GUIWindowType.StageEnd);
         }
 
         private void OnGameStarting(EmptyEventArgs args)

@@ -11,11 +11,17 @@ namespace Assets.Scripts.Managers
         {
             EventManager.EnemySpawned.Listeners += OnEnemySpawned;
             EventManager.GameFinishing.Listeners += OnGameFinishing;
+            EventManager.StageFinishing.Listeners += OnStageFinishing;
+        }
+
+        private void OnStageFinishing(EmptyEventArgs args)
+        {
+            ClearAll();
         }
 
         private void OnGameFinishing(EmptyEventArgs args)
         {
-            ClearAllEnemies();
+            ClearAll();
         }
 
         private void OnEnemySpawned(EnemySpawnedEventArgs args)
@@ -26,6 +32,14 @@ namespace Assets.Scripts.Managers
         public void ClearAll()
         {
             ClearAllEnemies();
+            var childrenToAbort = gameObject.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < childrenToAbort.Length; ++i)
+            {
+                if (childrenToAbort[i] != this.transform && childrenToAbort[i] != EnemiesContainer.transform)
+                {
+                    Destroy(childrenToAbort[i].gameObject);
+                }
+            }
         }
 
         public Enemy.Enemy[] GetAllEnemiesOnScene()

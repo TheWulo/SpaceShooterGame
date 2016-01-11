@@ -46,5 +46,10 @@ namespace Assets.Scripts.Attachables
         {
             ToggleFireOn = !ToggleFireOn;
         }
+
+        public void HoldFire()
+        {
+            ToggleFireOn = false;
+        }
     }
 }

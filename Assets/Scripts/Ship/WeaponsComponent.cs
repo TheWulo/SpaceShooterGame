@@ -21,5 +21,10 @@ namespace Assets.Scripts.Ship
         {
             controlledShip.WeaponSpots.ForEach(spot => spot.GetWeapon().ToggleFire());
         }
+
+        public void HoldAllFire()
+        {
+            controlledShip.WeaponSpots.ForEach(spot => spot.GetWeapon().HoldFire());
+        }
     }
 }
