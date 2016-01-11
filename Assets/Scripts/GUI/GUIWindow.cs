@@ -4,7 +4,7 @@ using Assets.Scripts.Interfaces;
 
 namespace Assets.Scripts.GUI
 {
-    public enum GUIWindowType {MainMenu, Save, Play, Garage, Pause, Options, Credits, Research}
+    public enum GUIWindowType {MainMenu, Save, Play, Garage, Pause, Options, Credits, Research, StageSelect}
 
     public class GUIWindow : MonoBehaviour, IInitializable
     {

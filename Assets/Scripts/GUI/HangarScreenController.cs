@@ -81,8 +81,7 @@ namespace Assets.Scripts.GUI
                 Debug.Log("Ship not ready!");
                 return;
             }
-            EventManager.GameStarting.Invoke(new EmptyEventArgs());
-            GUIManager.instance.ShowWindow(GUIWindowType.Play);
+            GUIManager.instance.ShowWindow(GUIWindowType.StageSelect);
         }
 
         public override void Show()

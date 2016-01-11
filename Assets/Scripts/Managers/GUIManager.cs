@@ -17,6 +17,7 @@ namespace Assets.Scripts.Managers
 
         public void Init()
         {
+            EventManager.GameStarting.Listeners += OnGameStarting;
             foreach(var window in guiWindows)
             {
                 window.GetComponent<IInitializable>().Init();
@@ -24,6 +25,11 @@ namespace Assets.Scripts.Managers
 
             ShowWindow(GUIWindowType.MainMenu);
             isInitialized = true;
+        }
+
+        private void OnGameStarting(EmptyEventArgs args)
+        {
+            ShowWindow(GUIWindowType.Play);
         }
 
         public bool IsInitialized()

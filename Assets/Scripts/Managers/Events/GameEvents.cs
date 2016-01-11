@@ -32,6 +32,10 @@ namespace Assets.Scripts.Managers
         public static EventInvoker<EmptyEventArgs> ShieldHit
                 = new EventInvoker<EmptyEventArgs>();
 
+        //Stages
+        public static EventInvoker<StageStartedEventArgs> StageStarted
+                = new EventInvoker<StageStartedEventArgs>();
+
     }
 
     public class ScrapMetalCollectedEventArgs : EventArgs
@@ -71,6 +75,16 @@ namespace Assets.Scripts.Managers
         public WeaponFiredEventArgs(Weapon weapon)
         {
             Weapon = weapon;
+        }
+    }
+
+    public class StageStartedEventArgs : EventArgs
+    {
+        public readonly string StageID;
+
+        public StageStartedEventArgs(string stageID)
+        {
+            StageID = stageID;
         }
     }
 }

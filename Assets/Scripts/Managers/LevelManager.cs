@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Scripts.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace Assets.Scripts.Managers
 {
@@ -9,9 +10,9 @@ namespace Assets.Scripts.Managers
         private bool isInitialized;
 
         [SerializeField]
-        private GameObject LevelAthene1;
+        private List<GameObject> LevelsAthene;
         [SerializeField]
-        private GameObject LevelFelgor1;
+        private List<GameObject> LevelsFelgor;
 
         public GameObject CurrentLevel;
 
@@ -32,21 +33,21 @@ namespace Assets.Scripts.Managers
         
         private void OnGameStarting(EmptyEventArgs args)
         {
-            int level = UnityEngine.Random.Range(0, 2);
-
-            if (level == 0)
+            switch (StagesManager.instance.GetAlienRaceForStage(StagesManager.instance.CurrentStageID))
             {
-                CurrentLevel = Instantiate(LevelAthene1);
-            }
-            else
-            {
-                CurrentLevel = Instantiate(LevelFelgor1);
+                case Enemy.AlienRace.Athene:
+                    CurrentLevel = Instantiate(LevelsAthene[0]) as GameObject;
+                    break;
+                case Enemy.AlienRace.Felgor:
+                    CurrentLevel = Instantiate(LevelsFelgor[0]) as GameObject;
+                    break;
             }
         }
 
         private void OnGameFinishing(EmptyEventArgs args)
         {
-            Destroy(CurrentLevel.gameObject);
+            if (CurrentLevel != null)
+                Destroy(CurrentLevel.gameObject);
             CurrentLevel = null;
         }
     }
