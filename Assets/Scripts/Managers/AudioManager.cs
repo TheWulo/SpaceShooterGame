@@ -28,6 +28,9 @@ namespace Assets.Scripts.Managers
         public AudioSource LevelAthene;
         public AudioSource CreditsMusic;
 
+        [Header("Other")]
+        public AudioSource Cheater;
+
         public void Init()
         {
             EventManager.ItemAttached.Listeners += OnItemAttached;

@@ -3,6 +3,7 @@ using Assets.Scripts.Attachables;
 using System.Collections.Generic;
 using Assets.Scripts.Interfaces;
 using System;
+using Assets.Scripts.Ship;
 
 namespace Assets.Scripts.Managers
 {
@@ -92,11 +93,26 @@ namespace Assets.Scripts.Managers
             return VehiclesManager.instance.TryUnlockNewShip(shipID);
         }
 
-        void Update()
+        public void UnlockAllAttachables()
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            bool test;
+
+            foreach (var attach in AttachablesDatabase.instance.GetAllAttachables())
             {
-                PlayerManager.instance.CollectedScrap += 1000;
+                test = false;
+
+                foreach (var unlockedAttach in playerUnlockedAttachables)
+                {
+                    if (attach.AttachableID == unlockedAttach)
+                    {
+                        test = true;
+                    }
+                }
+
+                if (test == false)
+                {
+                    playerUnlockedAttachables.Add(attach.AttachableID);
+                }
             }
         }
     }

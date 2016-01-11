@@ -26,6 +26,8 @@ namespace Assets.Scripts.Ship
         private float currentAgility;
         private int currentEnergy;
 
+        public bool GodMode = false;
+
         [Header("Ship Components")]
         public WeaponsComponent WeaponComponent;
         public MotorComponent MotorComponent;
@@ -77,6 +79,8 @@ namespace Assets.Scripts.Ship
 
         public virtual void TakeDamage(int amount)
         {
+            if (GodMode) return;
+
             CurrentHealth -= amount;
             EventManager.PlayerTookDamage.Invoke(new PlayerTookDamageEventArgs(amount));
 

@@ -115,5 +115,15 @@ namespace Assets.Scripts.Managers
             }
             return false;
         }
+
+        public void UnlockAllShips()
+        {
+            PlayerShips.Clear();
+            PlayerShips.Add("StarDart");
+            PlayerShips.Add("StarBug");
+            PlayerShips.Add("WuL0Wing");
+            PlayerShips.Add("XAT801");
+            PlayerCurrentShipID = "StarDart";
+        }
     }
 }
