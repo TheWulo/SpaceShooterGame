@@ -24,6 +24,14 @@ namespace Assets.Scripts.Managers
         public static EventInvoker<WeaponFiredEventArgs> WeaponFired
                 = new EventInvoker<WeaponFiredEventArgs>();
 
+        //Shield
+        public static EventInvoker<EmptyEventArgs> ShieldActivated
+                = new EventInvoker<EmptyEventArgs>();
+        public static EventInvoker<EmptyEventArgs> ShieldDeactivated
+                = new EventInvoker<EmptyEventArgs>();
+        public static EventInvoker<EmptyEventArgs> ShieldHit
+                = new EventInvoker<EmptyEventArgs>();
+
     }
 
     public class ScrapMetalCollectedEventArgs : EventArgs

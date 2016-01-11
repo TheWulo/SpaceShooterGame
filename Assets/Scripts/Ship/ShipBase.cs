@@ -43,9 +43,15 @@ namespace Assets.Scripts.Ship
         {
             WeaponComponent.Prepare();
             MotorComponent.Prepare();
+
+            foreach (var supportSpot in SupportSpots)
+            {
+                supportSpot.GetSupport().Prepare(ShipID);
+            }
+
             CurrentHealth = Health;
 
-            gameObject.transform.position = Vector3.zero;
+            gameObject.transform.position = new Vector3(-2, 0, 0);
         }
 
         protected virtual void OnTriggerEnter2D(Collider2D other)

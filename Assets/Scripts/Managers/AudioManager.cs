@@ -18,6 +18,11 @@ namespace Assets.Scripts.Managers
         public AudioSource RocketCannonShoot;
         public AudioSource RocketCannonHit;
 
+        [Header("Shield")]
+        public AudioSource ShieldActivated;
+        public AudioSource ShieldDeactivated;
+        public AudioSource ShieldHit;
+
         [Header("Music")]
         public AudioSource MainMenu;
         public AudioSource LevelAthene;
@@ -29,8 +34,27 @@ namespace Assets.Scripts.Managers
             EventManager.GameFinishing.Listeners += OnGameFinishing;
             EventManager.GameStarting.Listeners += OnGameStarting;
             EventManager.WeaponFired.Listeners += OnWeaponFired;
+            EventManager.ShieldActivated.Listeners += OnShieldActivated;
+            EventManager.ShieldDeactivated.Listeners += OnShieldDeactivated;
+            EventManager.ShieldHit.Listeners += OnShieldHit;
             MainMenu.Play();
             isInitialized = true;
+        }
+
+        private void OnShieldHit(EmptyEventArgs args)
+        {
+            if (!ShieldHit.isPlaying)
+                ShieldHit.Play();
+        }
+
+        private void OnShieldDeactivated(EmptyEventArgs args)
+        {
+            ShieldDeactivated.Play();
+        }
+
+        private void OnShieldActivated(EmptyEventArgs args)
+        {
+            ShieldActivated.Play();
         }
 
         private void OnWeaponFired(WeaponFiredEventArgs args)
