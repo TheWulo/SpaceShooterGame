@@ -114,6 +114,8 @@ namespace Assets.Scripts.Managers
                     playerUnlockedAttachables.Add(attach.AttachableID);
                 }
             }
+
+            InventoryManager.instance.RefreshInventory();
         }
     }
 }

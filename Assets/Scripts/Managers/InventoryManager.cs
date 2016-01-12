@@ -33,6 +33,12 @@ namespace Assets.Scripts.Managers
         {
             return isInitialized;
         }
+
+        public void RefreshInventory()
+        {
+            PlayersAttachables.Clear();
+            PlayersAttachables.AddRange(ResearchManager.instance.GetAllUnlockedAttachables());
+        }
         #endregion
     }
 }
