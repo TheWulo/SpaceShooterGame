@@ -31,21 +31,27 @@ namespace Assets.Scripts.Ship
 
         void HandleMovement()
         {
+            Vector3 targetPosition = Vector3.zero;
+
             if (Input.GetKey(KeyCode.UpArrow))
             {
-                gameObject.transform.Translate(Vector3.up * MovementSpeed * Time.deltaTime / 100.0f);
+                targetPosition += Vector3.up;
             }
             if (Input.GetKey(KeyCode.DownArrow))
             {
-                gameObject.transform.Translate(Vector3.up * -MovementSpeed * Time.deltaTime / 100.0f);
+                targetPosition += Vector3.down;
             }
             if (Input.GetKey(KeyCode.LeftArrow))
             {
-                gameObject.transform.Translate(Vector3.right * -MovementSpeed * Time.deltaTime / 100.0f);
+                targetPosition += Vector3.left;
             }
             if (Input.GetKey(KeyCode.RightArrow))
             {
-                gameObject.transform.Translate(Vector3.right * MovementSpeed * Time.deltaTime / 100.0f);
+                targetPosition += Vector3.right;
+            }
+            if (targetPosition != Vector3.zero)
+            {
+                gameObject.transform.Translate(targetPosition.normalized * MovementSpeed * Time.deltaTime / 100.0f);
             }
         }
     }

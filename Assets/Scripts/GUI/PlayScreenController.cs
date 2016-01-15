@@ -10,6 +10,8 @@ namespace Assets.Scripts.GUI
         private Text HealthLabel;
         [SerializeField]
         private Text ScrapLabel;
+        [SerializeField]
+        private Slider TimeScrollbar;
 
         void Start()
         {
@@ -49,6 +51,8 @@ namespace Assets.Scripts.GUI
             {
                 EventManager.GameFinishing.Invoke(new EmptyEventArgs());
             }
+
+            TimeScrollbar.value = GameManager.instance.GameTimer / GameManager.instance.GameTimeTotal;
         }
     }
 }
